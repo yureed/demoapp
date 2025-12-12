@@ -540,17 +540,16 @@ def render_retail():
             ds = st.selectbox("State", ["Select Region first"], disabled=True, key="rd_s")
     
     if dr == 'All Regions':
-        dd = fdf.groupby('Region').agg({'Sales': 'sum', 'Profit': 'sum'}).reset_index()
+        dd = fdf.groupby('Region').agg({'Sales': 'sum'}).reset_index()
         xcol, title = 'Region', 'Sales by Region'
     elif ds in ['All States', 'Select Region first']:
-        dd = fdf[fdf['Region'] == dr].groupby('State').agg({'Sales': 'sum', 'Profit': 'sum'}).reset_index().sort_values('Sales', ascending=False).head(15)
+        dd = fdf[fdf['Region'] == dr].groupby('State').agg({'Sales': 'sum'}).reset_index().sort_values('Sales', ascending=False).head(15)
         xcol, title = 'State', f'Sales by State ({dr})'
     else:
-        dd = fdf[(fdf['Region'] == dr) & (fdf['State'] == ds)].groupby('City').agg({'Sales': 'sum', 'Profit': 'sum'}).reset_index().sort_values('Sales', ascending=False).head(15)
+        dd = fdf[(fdf['Region'] == dr) & (fdf['State'] == ds)].groupby('City').agg({'Sales': 'sum'}).reset_index().sort_values('Sales', ascending=False).head(15)
         xcol, title = 'City', f'Sales by City ({ds})'
     
-    dd['Margin'] = (dd['Profit'] / dd['Sales'] * 100).round(1)
-    fig = px.bar(dd, x=xcol, y='Sales', color='Margin', color_continuous_scale='RdYlGn', title=title, labels={'Margin': 'Margin %'})
+    fig = px.bar(dd, x=xcol, y='Sales', color='Sales', color_continuous_scale='Blues', title=title, labels={'Sales': 'Sales'})
     style_chart(fig)
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig, use_container_width=True)
@@ -622,13 +621,15 @@ def render_hr():
     dd = st.selectbox("Department", ['All Departments'] + sorted(fdf['Department'].unique().tolist()), key="hr_dd")
     
     if dd == 'All Departments':
-        d = fdf.groupby('Department').apply(lambda x: pd.Series({'Rate': (x['Attrition']=='Yes').sum()/len(x)*100, 'Salary': x['MonthlyIncome'].mean()})).reset_index()
+        d = fdf.groupby('Department').apply(lambda x: pd.Series({'Rate': (x['Attrition']=='Yes').sum()/len(x)*100})).reset_index()
+        d['Rate'] = d['Rate'].round(1)
         xcol, title = 'Department', 'Attrition by Department'
     else:
-        d = fdf[fdf['Department'] == dd].groupby('JobRole').apply(lambda x: pd.Series({'Rate': (x['Attrition']=='Yes').sum()/len(x)*100, 'Salary': x['MonthlyIncome'].mean()})).reset_index()
+        d = fdf[fdf['Department'] == dd].groupby('JobRole').apply(lambda x: pd.Series({'Rate': (x['Attrition']=='Yes').sum()/len(x)*100})).reset_index()
+        d['Rate'] = d['Rate'].round(1)
         xcol, title = 'JobRole', f'Attrition by Role ({dd})'
     
-    fig = px.bar(d, x=xcol, y='Rate', color='Salary', color_continuous_scale='Viridis', title=title, labels={'Rate': 'Attrition %', 'Salary': 'Avg Salary'})
+    fig = px.bar(d, x=xcol, y='Rate', color='Rate', color_continuous_scale='RdYlGn_r', title=title, labels={'Rate': 'Attrition %'})
     style_chart(fig)
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig, use_container_width=True)
@@ -664,8 +665,8 @@ def render_marketing():
     with c1:
         st.markdown("### ROI by Channel")
         d = fdf.groupby('Channel_Used').agg({'ROI': 'mean', 'Conversion_Rate': 'mean'}).reset_index()
-        d['Conversion_Rate'] = (d['Conversion_Rate'] * 100).round(1)
-        fig = px.bar(d, x='Channel_Used', y='ROI', color='Conversion_Rate', color_continuous_scale='Viridis', labels={'Conversion_Rate': 'Conv %'})
+        d['ROI'] = d['ROI'].round(2)
+        fig = px.bar(d, x='Channel_Used', y='ROI', color='ROI', color_continuous_scale='Viridis', labels={'ROI': 'ROI'})
         style_chart(fig, 350)
         st.plotly_chart(fig, use_container_width=True)
     
@@ -706,15 +707,15 @@ def render_marketing():
     dc = st.selectbox("Channel", ['All Channels'] + sorted(fdf['Channel_Used'].unique().tolist()), key="m_dd")
     
     if dc == 'All Channels':
-        d = fdf.groupby('Channel_Used').agg({'ROI': 'mean', 'Conversion_Rate': 'mean'}).reset_index()
-        d['Conversion_Rate'] = (d['Conversion_Rate'] * 100).round(1)
+        d = fdf.groupby('Channel_Used').agg({'ROI': 'mean'}).reset_index()
+        d['ROI'] = d['ROI'].round(2)
         xcol, title = 'Channel_Used', 'ROI by Channel'
     else:
-        d = fdf[fdf['Channel_Used'] == dc].groupby('Campaign_Type').agg({'ROI': 'mean', 'Conversion_Rate': 'mean'}).reset_index()
-        d['Conversion_Rate'] = (d['Conversion_Rate'] * 100).round(1)
+        d = fdf[fdf['Channel_Used'] == dc].groupby('Campaign_Type').agg({'ROI': 'mean'}).reset_index()
+        d['ROI'] = d['ROI'].round(2)
         xcol, title = 'Campaign_Type', f'ROI by Type ({dc})'
     
-    fig = px.bar(d, x=xcol, y='ROI', color='Conversion_Rate', color_continuous_scale='Viridis', title=title, labels={'Conversion_Rate': 'Conv %'})
+    fig = px.bar(d, x=xcol, y='ROI', color='ROI', color_continuous_scale='Viridis', title=title, labels={'ROI': 'ROI'})
     style_chart(fig)
     st.plotly_chart(fig, use_container_width=True)
 
@@ -782,13 +783,13 @@ def render_ecommerce():
     dc = st.selectbox("City", ['All Cities'] + sorted(fdf['City'].unique().tolist()), key="e_dd")
     
     if dc == 'All Cities':
-        d = fdf.groupby('City').agg({'Total Spend': 'sum', 'Average Rating': 'mean'}).reset_index()
+        d = fdf.groupby('City').agg({'Total Spend': 'sum'}).reset_index()
         xcol, title = 'City', 'Revenue by City'
     else:
-        d = fdf[fdf['City'] == dc].groupby('Membership Type').agg({'Total Spend': 'sum', 'Average Rating': 'mean'}).reset_index()
+        d = fdf[fdf['City'] == dc].groupby('Membership Type').agg({'Total Spend': 'sum'}).reset_index()
         xcol, title = 'Membership Type', f'Revenue by Membership ({dc})'
     
-    fig = px.bar(d, x=xcol, y='Total Spend', color='Average Rating', color_continuous_scale='Viridis', title=title, labels={'Average Rating': 'Rating'})
+    fig = px.bar(d, x=xcol, y='Total Spend', color='Total Spend', color_continuous_scale='Viridis', title=title, labels={'Total Spend': 'Revenue'})
     style_chart(fig)
     st.plotly_chart(fig, use_container_width=True)
 
