@@ -32,93 +32,150 @@ CHART_COLORS = [DSD_BLUE, DSD_LIGHT_BLUE, "#FF9800", "#4CAF50", "#E91E63", "#9C2
 # =============================================================================
 st.markdown("""
 <style>
-/* Aggressive Streamlit icon fix - paste this whole block and reload (Ctrl/Cmd+F5) */
-
-/* keep main background light */
-.main, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-  background-color: #ffffff !important;
-}
-
-/* keep normal text dark (target text nodes only) */
-.main, .block-container, [data-testid="stAppViewContainer"] { color: #1a1a2e !important; }
-.main p, .main span, .main li, .main a, .main label,
-.main input, .main button, .main textarea,
-.main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
-  color: #1a1a2e !important;
-}
-
-/* ========== AGGRESSIVE ICON OVERRIDES ========== */
-/* Target header / top-right toolbar icons used by Streamlit (GitHub, Share, etc.) */
-[data-testid="stHeader"] svg,
-[data-testid="stHeader"] svg * ,
-[data-testid="stAppViewContainer"] svg.header-icon,
-[data-testid="stAppViewContainer"] svg[role="img"],
-[data-testid="stAppViewContainer"] svg[role="img"] * {
-  fill: #1a1a2e !important;
-  color: #1a1a2e !important;
-  stroke: #1a1a2e !important;
-  opacity: 1 !important;
-  -webkit-text-fill-color: #1a1a2e !important;
-}
-
-/* Force any <path>, <circle>, <rect>, <polygon> inside header/toolbar to dark */
-[data-testid="stHeader"] path,
-[data-testid="stHeader"] circle,
-[data-testid="stHeader"] rect,
-[data-testid="stHeader"] polygon,
-[data-testid="stAppViewContainer"] path,
-[data-testid="stAppViewContainer"] circle,
-[data-testid="stAppViewContainer"] rect,
-[data-testid="stAppViewContainer"] polygon {
-  fill: #1a1a2e !important;
-  stroke: #1a1a2e !important;
-  color: #1a1a2e !important;
-  opacity: 1 !important;
-}
-
-/* If SVGs have inline `fill` attributes, override them too */
-svg[fill], svg[fill] * { fill: #1a1a2e !important; }
-
-/* Buttons that include icons (share, GitHub button icons, etc.) */
-button svg, button svg *, .stButton button svg, .stButton button svg * {
-  fill: #1a1a2e !important;
-  stroke: #1a1a2e !important;
-  color: #1a1a2e !important;
-  opacity: 1 !important;
-}
-
-/* Some icons are inside divs with role='button' */
-div[role="button"] svg, div[role="button"] svg * {
-  fill: #1a1a2e !important;
-  stroke: #1a1a2e !important;
-}
-
-/* Avoid touching sidebar icons/text (keep them white) */
-section[data-testid="stSidebar"], section[data-testid="stSidebar"] > div {
-  background: linear-gradient(180deg, #0a1628 0%, #0d2137 100%) !important;
-}
-section[data-testid="stSidebar"] *,
-section[data-testid="stSidebar"] svg,
-section[data-testid="stSidebar"] svg * {
-  color: #ffffff !important;
-  fill: #ffffff !important;
-  stroke: #ffffff !important;
-}
-
-/* If a third-party stylesheet is setting SVGs via mask / background-image,
-   this fallback gives contrast by inverting them inside header (last resort). */
-[data-testid="stHeader"] img,
-[data-testid="stHeader"] .css-1* img {
-  filter: invert(0%) !important; /* makes images dark if they were inverted */
-}
-
-/* keep other UI pieces styled as desired (uploader & cards) */
-.stFileUploader section { border: 2px dashed #1E88E5 !important; background: #F1F5F9 !important; border-radius: 12px !important; }
-.stFileUploader button { background-color: #1E88E5 !important; color: #FFFFFF !important; }
-.metric-card { background: #FFFFFF !important; border-radius: 16px; padding: 20px; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+    
+    /* Force light theme */
+    :root {
+        --primary-color: #1E88E5;
+        --background-color: #FFFFFF;
+        --secondary-background-color: #F8FAFC;
+        --text-color: #1a1a2e;
+    }
+    
+    /* White/light background */
+    .main, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] { 
+        background-color: #FFFFFF !important; 
+    }
+    
+    /* FORCE dark text on ALL elements in main area */
+    .main, .main *, [data-testid="stAppViewContainer"] *, .block-container, .block-container * {
+        color: #1a1a2e !important;
+    }
+    
+    /* Headers */
+    h1, h2, h3, h4, h5, h6,
+    .main h1, .main h2, .main h3, .main h4, .main h5, .main h6 { 
+        font-family: 'Space Grotesk', sans-serif !important; 
+        color: #1a1a2e !important; 
+    }
+    
+    /* All form labels */
+    label, .main label, [data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] * {
+        color: #1a1a2e !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Selectbox */
+    .stSelectbox, .stSelectbox * { color: #1a1a2e !important; }
+    .stSelectbox > div > div { 
+        background-color: #FFFFFF !important; 
+        border: 2px solid #CBD5E1 !important; 
+        border-radius: 8px !important; 
+    }
+    [data-baseweb="select"], [data-baseweb="select"] * { color: #1a1a2e !important; }
+    [data-baseweb="popover"], [data-baseweb="popover"] * { color: #1a1a2e !important; background-color: #FFFFFF !important; }
+    [data-baseweb="menu"], [data-baseweb="menu"] * { color: #1a1a2e !important; background-color: #FFFFFF !important; }
+    [data-baseweb="select"] svg { fill: #1a1a2e !important; }
+    
+    /* Date input */
+    .stDateInput, .stDateInput * { color: #1a1a2e !important; }
+    .stDateInput input { background-color: #FFFFFF !important; }
+    .stDateInput > div > div { border: 2px solid #CBD5E1 !important; border-radius: 8px !important; }
+    
+    /* File uploader */
+    .stFileUploader, .stFileUploader * { color: #1a1a2e !important; }
+    .stFileUploader section { 
+        border: 2px dashed #1E88E5 !important; 
+        border-radius: 12px !important; 
+        background: #F1F5F9 !important;
+    }
+    .stFileUploader small { color: #64748B !important; }
+    .stFileUploader button {
+        background-color: #1E88E5 !important;
+        color: #FFFFFF !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 8px 16px !important;
+    }
+    .stFileUploader button:hover {
+        background-color: #1565C0 !important;
+    }
+    
+    /* Metric cards */
+    .metric-card { 
+        background: #FFFFFF !important; 
+        border-radius: 16px; 
+        padding: 20px; 
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    .metric-value { font-size: 2.5rem; font-weight: 700; color: #1E88E5 !important; font-family: 'Space Grotesk', sans-serif; }
+    .metric-label { font-size: 0.9rem; color: #64748B !important; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+    
+    /* Feature cards */
+    .feature-card { 
+        background: #FFFFFF !important; 
+        border-radius: 12px; 
+        padding: 20px; 
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+    .feature-card h4 { color: #1E88E5 !important; margin-bottom: 8px; }
+    .feature-card p { color: #64748B !important; }
+    
+    /* Section divider */
+    .section-divider { height: 2px; background: linear-gradient(90deg, transparent, #1E88E5, transparent); margin: 30px 0; }
+    
+    /* Sidebar - KEEP DARK with white text */
+    section[data-testid="stSidebar"], section[data-testid="stSidebar"] > div { 
+        background: linear-gradient(180deg, #0a1628 0%, #0d2137 100%) !important; 
+    }
+    section[data-testid="stSidebar"] *, 
+    section[data-testid="stSidebar"] label,
+    section[data-testid="stSidebar"] span,
+    section[data-testid="stSidebar"] p,
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 { 
+        color: #FFFFFF !important; 
+    }
+    section[data-testid="stSidebar"] .stSelectbox > div > div { 
+        background-color: rgba(255,255,255,0.1) !important; 
+        border: 1px solid rgba(255,255,255,0.3) !important;
+    }
+    section[data-testid="stSidebar"] [data-baseweb="select"] * { color: #FFFFFF !important; }
+    
+    /* Dashboard header */
+    .dsd-header { color: #1E88E5 !important; font-size: 2.5rem; font-weight: 700; }
+    .dsd-subheader { color: #64748B !important; font-size: 1.1rem; }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] { background-color: #F1F5F9 !important; border-radius: 8px; padding: 4px; gap: 4px; }
+    .stTabs [data-baseweb="tab"], .stTabs [data-baseweb="tab"] * { 
+        background-color: transparent !important; 
+        border-radius: 6px; 
+        color: #64748B !important; 
+        font-weight: 500;
+    }
+    .stTabs [aria-selected="true"], .stTabs [aria-selected="true"] * { 
+        background-color: #FFFFFF !important; 
+        color: #1E88E5 !important; 
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Caption */
+    .stCaption, .stCaption * { color: #64748B !important; }
+    
+    /* Dataframe */
+    .stDataFrame, .stDataFrame *, [data-testid="stDataFrame"], [data-testid="stDataFrame"] * { 
+        color: #1a1a2e !important; 
+    }
+    
+    /* Info/warning boxes */
+    .stAlert, .stAlert *, [data-testid="stAlert"], [data-testid="stAlert"] * { 
+        color: #1a1a2e !important; 
+    }
 </style>
-
-
 """, unsafe_allow_html=True)
 
 # =============================================================================
