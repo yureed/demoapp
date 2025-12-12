@@ -32,162 +32,92 @@ CHART_COLORS = [DSD_BLUE, DSD_LIGHT_BLUE, "#FF9800", "#4CAF50", "#E91E63", "#9C2
 # =============================================================================
 st.markdown("""
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+/* Aggressive Streamlit icon fix - paste this whole block and reload (Ctrl/Cmd+F5) */
 
-  /* Force light theme variables */
-  :root {
-      --primary-color: #1E88E5;
-      --background-color: #FFFFFF;
-      --secondary-background-color: #F8FAFC;
-      --text-color: #1a1a2e;
-  }
+/* keep main background light */
+.main, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+  background-color: #ffffff !important;
+}
 
-  /* White/light background for main app */
-  .main, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-      background-color: #FFFFFF !important;
-  }
+/* keep normal text dark (target text nodes only) */
+.main, .block-container, [data-testid="stAppViewContainer"] { color: #1a1a2e !important; }
+.main p, .main span, .main li, .main a, .main label,
+.main input, .main button, .main textarea,
+.main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
+  color: #1a1a2e !important;
+}
 
-  /* --------------------------------------------------------------
-     TEXT COLOR — target common text elements only (do NOT use *. This
-     keeps SVGs & their <path> children from being overwritten)
-     -------------------------------------------------------------- */
-  .main,
-  .block-container,
-  [data-testid="stAppViewContainer"] {
-    color: #1a1a2e !important;
-  }
+/* ========== AGGRESSIVE ICON OVERRIDES ========== */
+/* Target header / top-right toolbar icons used by Streamlit (GitHub, Share, etc.) */
+[data-testid="stHeader"] svg,
+[data-testid="stHeader"] svg * ,
+[data-testid="stAppViewContainer"] svg.header-icon,
+[data-testid="stAppViewContainer"] svg[role="img"],
+[data-testid="stAppViewContainer"] svg[role="img"] * {
+  fill: #1a1a2e !important;
+  color: #1a1a2e !important;
+  stroke: #1a1a2e !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: #1a1a2e !important;
+}
 
-  .main p,
-  .main span,
-  .main li,
-  .main a,
-  .main label,
-  .main input,
-  .main button,
-  .main textarea,
-  .main h1, .main h2, .main h3, .main h4, .main h5, .main h6,
-  .main .stCaption,
-  .main .stMarkdown,
-  .main .stText,
-  [data-testid="stAppViewContainer"] p,
-  [data-testid="stAppViewContainer"] label {
-    color: #1a1a2e !important;
-  }
+/* Force any <path>, <circle>, <rect>, <polygon> inside header/toolbar to dark */
+[data-testid="stHeader"] path,
+[data-testid="stHeader"] circle,
+[data-testid="stHeader"] rect,
+[data-testid="stHeader"] polygon,
+[data-testid="stAppViewContainer"] path,
+[data-testid="stAppViewContainer"] circle,
+[data-testid="stAppViewContainer"] rect,
+[data-testid="stAppViewContainer"] polygon {
+  fill: #1a1a2e !important;
+  stroke: #1a1a2e !important;
+  color: #1a1a2e !important;
+  opacity: 1 !important;
+}
 
-  /* Keep your headings styled */
-  h1, h2, h3, h4, h5, h6,
-  .main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
-    font-family: 'Space Grotesk', sans-serif !important;
-    color: #1a1a2e !important;
-  }
+/* If SVGs have inline `fill` attributes, override them too */
+svg[fill], svg[fill] * { fill: #1a1a2e !important; }
 
-  /* Sidebar — keep dark with white text/icons as you had */
-  section[data-testid="stSidebar"], section[data-testid="stSidebar"] > div {
-    background: linear-gradient(180deg, #0a1628 0%, #0d2137 100%) !important;
-  }
-  section[data-testid="stSidebar"] *,
-  section[data-testid="stSidebar"] label,
-  section[data-testid="stSidebar"] span,
-  section[data-testid="stSidebar"] p,
-  section[data-testid="stSidebar"] h1,
-  section[data-testid="stSidebar"] h2,
-  section[data-testid="stSidebar"] h3 {
-    color: #FFFFFF !important;
-  }
-  /* Sidebar icons white */
-  section[data-testid="stSidebar"] svg,
-  section[data-testid="stSidebar"] svg * {
-    fill: #FFFFFF !important;
-    color: #FFFFFF !important;
-    stroke: #FFFFFF !important;
-  }
+/* Buttons that include icons (share, GitHub button icons, etc.) */
+button svg, button svg *, .stButton button svg, .stButton button svg * {
+  fill: #1a1a2e !important;
+  stroke: #1a1a2e !important;
+  color: #1a1a2e !important;
+  opacity: 1 !important;
+}
 
-  /* --------------------------------------------------------------------
-     ICON FIXES — explicitly make header/toolbar/button icons dark so they
-     don't disappear on white background. We set fill, stroke and color to
-     cover different SVG usages (fill="currentColor", stroke, etc.).
-     -------------------------------------------------------------------- */
+/* Some icons are inside divs with role='button' */
+div[role="button"] svg, div[role="button"] svg * {
+  fill: #1a1a2e !important;
+  stroke: #1a1a2e !important;
+}
 
-  /* Header + top toolbar icons (GitHub/share etc) */
-  [data-testid="stHeader"] svg,
-  [data-testid="stHeader"] svg * {
-    fill: #1a1a2e !important;
-    color: #1a1a2e !important;
-    stroke: #1a1a2e !important;
-    opacity: 1 !important;
-  }
+/* Avoid touching sidebar icons/text (keep them white) */
+section[data-testid="stSidebar"], section[data-testid="stSidebar"] > div {
+  background: linear-gradient(180deg, #0a1628 0%, #0d2137 100%) !important;
+}
+section[data-testid="stSidebar"] *,
+section[data-testid="stSidebar"] svg,
+section[data-testid="stSidebar"] svg * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
 
-  /* Icons inside the main app area: buttons, toolbars, and controls */
-  /* button svg covers icons rendered inside buttons (e.g., share, GitHub) */
-  button svg,
-  button svg * ,
-  .stButton button svg,
-  [data-testid="stAppViewContainer"] button svg,
-  [data-testid="stAppViewContainer"] svg[role="img"],
-  [data-testid="stAppViewContainer"] svg[role="img"] * {
-    fill: #1a1a2e !important;
-    color: #1a1a2e !important;
-    stroke: #1a1a2e !important;
-    opacity: 1 !important;
-  }
+/* If a third-party stylesheet is setting SVGs via mask / background-image,
+   this fallback gives contrast by inverting them inside header (last resort). */
+[data-testid="stHeader"] img,
+[data-testid="stHeader"] .css-1* img {
+  filter: invert(0%) !important; /* makes images dark if they were inverted */
+}
 
-  /* Some Streamlit icons might be direct descendants of header/nav elements */
-  header svg,
-  nav svg,
-  header svg *, nav svg * {
-    fill: #1a1a2e !important;
-    color: #1a1a2e !important;
-    stroke: #1a1a2e !important;
-  }
-
-  /* Keep SVGs generally visible (but don't override sidebar ones) */
-  /* We avoid a global `svg` rule so we don't break intentionally white icons */
-  .main svg,
-  .main svg * {
-    /* only set if not inside sidebar */
-    fill: inherit !important;
-    color: inherit !important;
-    stroke: inherit !important;
-  }
-
-  /* -- small nice-to-have polish for contrast on header icons -- */
-  [data-testid="stHeader"] svg { width: 18px; height: 18px; }
-
-  /* --- Other UI tweaks you had left intact (uploader, cards, etc.) --- */
-  .stFileUploader section {
-      border: 2px dashed #1E88E5 !important;
-      border-radius: 12px !important;
-      background: #F1F5F9 !important;
-  }
-  .stFileUploader small { color: #64748B !important; }
-  .stFileUploader button {
-      background-color: #1E88E5 !important;
-      color: #FFFFFF !important;
-      border: none !important;
-      border-radius: 6px !important;
-      padding: 8px 16px !important;
-  }
-  .stFileUploader button:hover { background-color: #1565C0 !important; }
-
-  /* metric and feature cards (keep as you had) */
-  .metric-card { 
-      background: #FFFFFF !important; 
-      border-radius: 16px; 
-      padding: 20px; 
-      border: 1px solid #E2E8F0;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  }
-  .metric-value { font-size: 2.5rem; font-weight: 700; color: #1E88E5 !important; font-family: 'Space Grotesk', sans-serif; }
-  .metric-label { font-size: 0.9rem; color: #64748B !important; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
-
-  /* keep your other controls styled as before (tabs, captions, dataframes, etc) */
-  .stTabs [data-baseweb="tab-list"] { background-color: #F1F5F9 !important; border-radius: 8px; padding: 4px; gap: 4px; }
-  .stTabs [data-baseweb="tab"], .stTabs [data-baseweb="tab"] * { background-color: transparent !important; border-radius: 6px; color: #64748B !important; font-weight: 500; }
-  .stTabs [aria-selected="true"], .stTabs [aria-selected="true"] * { background-color: #FFFFFF !important; color: #1E88E5 !important; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-  .stCaption, .stCaption * { color: #64748B !important; }
-  .stDataFrame, .stDataFrame *, [data-testid="stDataFrame"], [data-testid="stDataFrame"] * { color: #1a1a2e !important; }
-
+/* keep other UI pieces styled as desired (uploader & cards) */
+.stFileUploader section { border: 2px dashed #1E88E5 !important; background: #F1F5F9 !important; border-radius: 12px !important; }
+.stFileUploader button { background-color: #1E88E5 !important; color: #FFFFFF !important; }
+.metric-card { background: #FFFFFF !important; border-radius: 16px; padding: 20px; border: 1px solid #E2E8F0; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
 </style>
+
 
 """, unsafe_allow_html=True)
 
