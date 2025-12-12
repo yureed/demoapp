@@ -47,10 +47,30 @@ st.markdown("""
         background-color: #FFFFFF !important; 
     }
     
-    /* FORCE dark text on ALL elements in main area */
-    .main, .main *, [data-testid="stAppViewContainer"] *, .block-container, .block-container * {
-        color: #1a1a2e !important;
-    }
+    .main,
+.block-container,
+[data-testid="stAppViewContainer"] {
+  color: #1a1a2e !important;
+}
+
+/* Explicitly target common text elements so they stay dark */
+.main p,
+.main span,
+.main li,
+.main a,
+.main label,
+.main input,
+.main button,
+.main textarea,
+.main h1, .main h2, .main h3, .main h4, .main h5, .main h6,
+.main .stCaption,
+.main .stMarkdown,
+.main .stText,
+[data-testid="stAppViewContainer"] p,
+[data-testid="stAppViewContainer"] label {
+  color: #1a1a2e !important;
+}
+
     
     /* Headers */
     h1, h2, h3, h4, h5, h6,
