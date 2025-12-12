@@ -32,170 +32,163 @@ CHART_COLORS = [DSD_BLUE, DSD_LIGHT_BLUE, "#FF9800", "#4CAF50", "#E91E63", "#9C2
 # =============================================================================
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
-    
-    /* Force light theme */
-    :root {
-        --primary-color: #1E88E5;
-        --background-color: #FFFFFF;
-        --secondary-background-color: #F8FAFC;
-        --text-color: #1a1a2e;
-    }
-    
-    /* White/light background */
-    .main, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] { 
-        background-color: #FFFFFF !important; 
-    }
-    
-    .main,
-.block-container,
-[data-testid="stAppViewContainer"] {
-  color: #1a1a2e !important;
-}
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
 
-/* Explicitly target common text elements so they stay dark */
-.main p,
-.main span,
-.main li,
-.main a,
-.main label,
-.main input,
-.main button,
-.main textarea,
-.main h1, .main h2, .main h3, .main h4, .main h5, .main h6,
-.main .stCaption,
-.main .stMarkdown,
-.main .stText,
-[data-testid="stAppViewContainer"] p,
-[data-testid="stAppViewContainer"] label {
-  color: #1a1a2e !important;
-}
+  /* Force light theme variables */
+  :root {
+      --primary-color: #1E88E5;
+      --background-color: #FFFFFF;
+      --secondary-background-color: #F8FAFC;
+      --text-color: #1a1a2e;
+  }
 
-    
-    /* Headers */
-    h1, h2, h3, h4, h5, h6,
-    .main h1, .main h2, .main h3, .main h4, .main h5, .main h6 { 
-        font-family: 'Space Grotesk', sans-serif !important; 
-        color: #1a1a2e !important; 
-    }
-    
-    /* All form labels */
-    label, .main label, [data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] * {
-        color: #1a1a2e !important;
-        font-weight: 600 !important;
-    }
-    
-    /* Selectbox */
-    .stSelectbox, .stSelectbox * { color: #1a1a2e !important; }
-    .stSelectbox > div > div { 
-        background-color: #FFFFFF !important; 
-        border: 2px solid #CBD5E1 !important; 
-        border-radius: 8px !important; 
-    }
-    [data-baseweb="select"], [data-baseweb="select"] * { color: #1a1a2e !important; }
-    [data-baseweb="popover"], [data-baseweb="popover"] * { color: #1a1a2e !important; background-color: #FFFFFF !important; }
-    [data-baseweb="menu"], [data-baseweb="menu"] * { color: #1a1a2e !important; background-color: #FFFFFF !important; }
-    [data-baseweb="select"] svg { fill: #1a1a2e !important; }
-    
-    /* Date input */
-    .stDateInput, .stDateInput * { color: #1a1a2e !important; }
-    .stDateInput input { background-color: #FFFFFF !important; }
-    .stDateInput > div > div { border: 2px solid #CBD5E1 !important; border-radius: 8px !important; }
-    
-    /* File uploader */
-    .stFileUploader, .stFileUploader * { color: #1a1a2e !important; }
-    .stFileUploader section { 
-        border: 2px dashed #1E88E5 !important; 
-        border-radius: 12px !important; 
-        background: #F1F5F9 !important;
-    }
-    .stFileUploader small { color: #64748B !important; }
-    .stFileUploader button {
-        background-color: #1E88E5 !important;
-        color: #FFFFFF !important;
-        border: none !important;
-        border-radius: 6px !important;
-        padding: 8px 16px !important;
-    }
-    .stFileUploader button:hover {
-        background-color: #1565C0 !important;
-    }
-    
-    /* Metric cards */
-    .metric-card { 
-        background: #FFFFFF !important; 
-        border-radius: 16px; 
-        padding: 20px; 
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-    .metric-value { font-size: 2.5rem; font-weight: 700; color: #1E88E5 !important; font-family: 'Space Grotesk', sans-serif; }
-    .metric-label { font-size: 0.9rem; color: #64748B !important; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
-    
-    /* Feature cards */
-    .feature-card { 
-        background: #FFFFFF !important; 
-        border-radius: 12px; 
-        padding: 20px; 
-        border: 1px solid #E2E8F0;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-    }
-    .feature-card h4 { color: #1E88E5 !important; margin-bottom: 8px; }
-    .feature-card p { color: #64748B !important; }
-    
-    /* Section divider */
-    .section-divider { height: 2px; background: linear-gradient(90deg, transparent, #1E88E5, transparent); margin: 30px 0; }
-    
-    /* Sidebar - KEEP DARK with white text */
-    section[data-testid="stSidebar"], section[data-testid="stSidebar"] > div { 
-        background: linear-gradient(180deg, #0a1628 0%, #0d2137 100%) !important; 
-    }
-    section[data-testid="stSidebar"] *, 
-    section[data-testid="stSidebar"] label,
-    section[data-testid="stSidebar"] span,
-    section[data-testid="stSidebar"] p,
-    section[data-testid="stSidebar"] h1,
-    section[data-testid="stSidebar"] h2,
-    section[data-testid="stSidebar"] h3 { 
-        color: #FFFFFF !important; 
-    }
-    section[data-testid="stSidebar"] .stSelectbox > div > div { 
-        background-color: rgba(255,255,255,0.1) !important; 
-        border: 1px solid rgba(255,255,255,0.3) !important;
-    }
-    section[data-testid="stSidebar"] [data-baseweb="select"] * { color: #FFFFFF !important; }
-    
-    /* Dashboard header */
-    .dsd-header { color: #1E88E5 !important; font-size: 2.5rem; font-weight: 700; }
-    .dsd-subheader { color: #64748B !important; font-size: 1.1rem; }
-    
-    /* Tabs */
-    .stTabs [data-baseweb="tab-list"] { background-color: #F1F5F9 !important; border-radius: 8px; padding: 4px; gap: 4px; }
-    .stTabs [data-baseweb="tab"], .stTabs [data-baseweb="tab"] * { 
-        background-color: transparent !important; 
-        border-radius: 6px; 
-        color: #64748B !important; 
-        font-weight: 500;
-    }
-    .stTabs [aria-selected="true"], .stTabs [aria-selected="true"] * { 
-        background-color: #FFFFFF !important; 
-        color: #1E88E5 !important; 
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    
-    /* Caption */
-    .stCaption, .stCaption * { color: #64748B !important; }
-    
-    /* Dataframe */
-    .stDataFrame, .stDataFrame *, [data-testid="stDataFrame"], [data-testid="stDataFrame"] * { 
-        color: #1a1a2e !important; 
-    }
-    
-    /* Info/warning boxes */
-    .stAlert, .stAlert *, [data-testid="stAlert"], [data-testid="stAlert"] * { 
-        color: #1a1a2e !important; 
-    }
+  /* White/light background for main app */
+  .main, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+      background-color: #FFFFFF !important;
+  }
+
+  /* --------------------------------------------------------------
+     TEXT COLOR — target common text elements only (do NOT use *. This
+     keeps SVGs & their <path> children from being overwritten)
+     -------------------------------------------------------------- */
+  .main,
+  .block-container,
+  [data-testid="stAppViewContainer"] {
+    color: #1a1a2e !important;
+  }
+
+  .main p,
+  .main span,
+  .main li,
+  .main a,
+  .main label,
+  .main input,
+  .main button,
+  .main textarea,
+  .main h1, .main h2, .main h3, .main h4, .main h5, .main h6,
+  .main .stCaption,
+  .main .stMarkdown,
+  .main .stText,
+  [data-testid="stAppViewContainer"] p,
+  [data-testid="stAppViewContainer"] label {
+    color: #1a1a2e !important;
+  }
+
+  /* Keep your headings styled */
+  h1, h2, h3, h4, h5, h6,
+  .main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
+    font-family: 'Space Grotesk', sans-serif !important;
+    color: #1a1a2e !important;
+  }
+
+  /* Sidebar — keep dark with white text/icons as you had */
+  section[data-testid="stSidebar"], section[data-testid="stSidebar"] > div {
+    background: linear-gradient(180deg, #0a1628 0%, #0d2137 100%) !important;
+  }
+  section[data-testid="stSidebar"] *,
+  section[data-testid="stSidebar"] label,
+  section[data-testid="stSidebar"] span,
+  section[data-testid="stSidebar"] p,
+  section[data-testid="stSidebar"] h1,
+  section[data-testid="stSidebar"] h2,
+  section[data-testid="stSidebar"] h3 {
+    color: #FFFFFF !important;
+  }
+  /* Sidebar icons white */
+  section[data-testid="stSidebar"] svg,
+  section[data-testid="stSidebar"] svg * {
+    fill: #FFFFFF !important;
+    color: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+  }
+
+  /* --------------------------------------------------------------------
+     ICON FIXES — explicitly make header/toolbar/button icons dark so they
+     don't disappear on white background. We set fill, stroke and color to
+     cover different SVG usages (fill="currentColor", stroke, etc.).
+     -------------------------------------------------------------------- */
+
+  /* Header + top toolbar icons (GitHub/share etc) */
+  [data-testid="stHeader"] svg,
+  [data-testid="stHeader"] svg * {
+    fill: #1a1a2e !important;
+    color: #1a1a2e !important;
+    stroke: #1a1a2e !important;
+    opacity: 1 !important;
+  }
+
+  /* Icons inside the main app area: buttons, toolbars, and controls */
+  /* button svg covers icons rendered inside buttons (e.g., share, GitHub) */
+  button svg,
+  button svg * ,
+  .stButton button svg,
+  [data-testid="stAppViewContainer"] button svg,
+  [data-testid="stAppViewContainer"] svg[role="img"],
+  [data-testid="stAppViewContainer"] svg[role="img"] * {
+    fill: #1a1a2e !important;
+    color: #1a1a2e !important;
+    stroke: #1a1a2e !important;
+    opacity: 1 !important;
+  }
+
+  /* Some Streamlit icons might be direct descendants of header/nav elements */
+  header svg,
+  nav svg,
+  header svg *, nav svg * {
+    fill: #1a1a2e !important;
+    color: #1a1a2e !important;
+    stroke: #1a1a2e !important;
+  }
+
+  /* Keep SVGs generally visible (but don't override sidebar ones) */
+  /* We avoid a global `svg` rule so we don't break intentionally white icons */
+  .main svg,
+  .main svg * {
+    /* only set if not inside sidebar */
+    fill: inherit !important;
+    color: inherit !important;
+    stroke: inherit !important;
+  }
+
+  /* -- small nice-to-have polish for contrast on header icons -- */
+  [data-testid="stHeader"] svg { width: 18px; height: 18px; }
+
+  /* --- Other UI tweaks you had left intact (uploader, cards, etc.) --- */
+  .stFileUploader section {
+      border: 2px dashed #1E88E5 !important;
+      border-radius: 12px !important;
+      background: #F1F5F9 !important;
+  }
+  .stFileUploader small { color: #64748B !important; }
+  .stFileUploader button {
+      background-color: #1E88E5 !important;
+      color: #FFFFFF !important;
+      border: none !important;
+      border-radius: 6px !important;
+      padding: 8px 16px !important;
+  }
+  .stFileUploader button:hover { background-color: #1565C0 !important; }
+
+  /* metric and feature cards (keep as you had) */
+  .metric-card { 
+      background: #FFFFFF !important; 
+      border-radius: 16px; 
+      padding: 20px; 
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  }
+  .metric-value { font-size: 2.5rem; font-weight: 700; color: #1E88E5 !important; font-family: 'Space Grotesk', sans-serif; }
+  .metric-label { font-size: 0.9rem; color: #64748B !important; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
+
+  /* keep your other controls styled as before (tabs, captions, dataframes, etc) */
+  .stTabs [data-baseweb="tab-list"] { background-color: #F1F5F9 !important; border-radius: 8px; padding: 4px; gap: 4px; }
+  .stTabs [data-baseweb="tab"], .stTabs [data-baseweb="tab"] * { background-color: transparent !important; border-radius: 6px; color: #64748B !important; font-weight: 500; }
+  .stTabs [aria-selected="true"], .stTabs [aria-selected="true"] * { background-color: #FFFFFF !important; color: #1E88E5 !important; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+  .stCaption, .stCaption * { color: #64748B !important; }
+  .stDataFrame, .stDataFrame *, [data-testid="stDataFrame"], [data-testid="stDataFrame"] * { color: #1a1a2e !important; }
+
 </style>
+
 """, unsafe_allow_html=True)
 
 # =============================================================================
