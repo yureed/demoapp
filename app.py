@@ -5,9 +5,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import numpy as np
 
-# =============================================================================
-# PAGE CONFIG
-# =============================================================================
 st.set_page_config(
     page_title="Analytics Demo | Data Science Dojo",
     page_icon="https://datasciencedojo.com/wp-content/uploads/dsd-favicon-80x80.png",
@@ -15,9 +12,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# =============================================================================
-# DATA SCIENCE DOJO BRAND COLORS
-# =============================================================================
 DSD_NAVY = "#0A1628"
 DSD_BLUE = "#1E88E5"
 DSD_LIGHT_BLUE = "#4FC3F7"
@@ -27,14 +21,10 @@ DSD_TEXT = "#212121"
 DSD_TEXT_SECONDARY = "#616161"
 CHART_COLORS = [DSD_BLUE, DSD_LIGHT_BLUE, "#FF9800", "#4CAF50", "#E91E63", "#9C27B0"]
 
-# =============================================================================
-# CUSTOM CSS - LIGHT BACKGROUND, DARK TEXT, DSD COLORS
-# =============================================================================
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
     
-    /* Force light theme */
     :root {
         --primary-color: #1E88E5;
         --background-color: #FFFFFF;
@@ -42,30 +32,25 @@ st.markdown("""
         --text-color: #1a1a2e;
     }
     
-    /* White/light background */
     .main, .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] { 
         background-color: #FFFFFF !important; 
     }
     
-    /* FORCE dark text on ALL elements in main area */
     .main, .main *, [data-testid="stAppViewContainer"] *, .block-container, .block-container * {
         color: #1a1a2e !important;
     }
     
-    /* Headers */
     h1, h2, h3, h4, h5, h6,
     .main h1, .main h2, .main h3, .main h4, .main h5, .main h6 { 
         font-family: 'Space Grotesk', sans-serif !important; 
         color: #1a1a2e !important; 
     }
     
-    /* All form labels */
     label, .main label, [data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] * {
         color: #1a1a2e !important;
         font-weight: 600 !important;
     }
     
-    /* Selectbox */
     .stSelectbox, .stSelectbox * { color: #1a1a2e !important; }
     .stSelectbox > div > div { 
         background-color: #FFFFFF !important; 
@@ -77,12 +62,10 @@ st.markdown("""
     [data-baseweb="menu"], [data-baseweb="menu"] * { color: #1a1a2e !important; background-color: #FFFFFF !important; }
     [data-baseweb="select"] svg { fill: #1a1a2e !important; }
     
-    /* Date input */
     .stDateInput, .stDateInput * { color: #1a1a2e !important; }
     .stDateInput input { background-color: #FFFFFF !important; }
     .stDateInput > div > div { border: 2px solid #CBD5E1 !important; border-radius: 8px !important; }
     
-    /* File uploader */
     .stFileUploader, .stFileUploader * { color: #1a1a2e !important; }
     .stFileUploader section { 
         border: 2px dashed #1E88E5 !important; 
@@ -101,7 +84,6 @@ st.markdown("""
         background-color: #1565C0 !important;
     }
     
-    /* Metric cards */
     .metric-card { 
         background: #FFFFFF !important; 
         border-radius: 16px; 
@@ -112,7 +94,6 @@ st.markdown("""
     .metric-value { font-size: 2.5rem; font-weight: 700; color: #1E88E5 !important; font-family: 'Space Grotesk', sans-serif; }
     .metric-label { font-size: 0.9rem; color: #64748B !important; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; }
     
-    /* Feature cards */
     .feature-card { 
         background: #FFFFFF !important; 
         border-radius: 12px; 
@@ -123,10 +104,8 @@ st.markdown("""
     .feature-card h4 { color: #1E88E5 !important; margin-bottom: 8px; }
     .feature-card p { color: #64748B !important; }
     
-    /* Section divider */
     .section-divider { height: 2px; background: linear-gradient(90deg, transparent, #1E88E5, transparent); margin: 30px 0; }
     
-    /* Sidebar - KEEP DARK with white text */
     section[data-testid="stSidebar"], section[data-testid="stSidebar"] > div { 
         background: linear-gradient(180deg, #0a1628 0%, #0d2137 100%) !important; 
     }
@@ -145,11 +124,9 @@ st.markdown("""
     }
     section[data-testid="stSidebar"] [data-baseweb="select"] * { color: #FFFFFF !important; }
     
-    /* Dashboard header */
     .dsd-header { color: #1E88E5 !important; font-size: 2.5rem; font-weight: 700; }
     .dsd-subheader { color: #64748B !important; font-size: 1.1rem; }
     
-    /* Tabs */
     .stTabs [data-baseweb="tab-list"] { background-color: #F1F5F9 !important; border-radius: 8px; padding: 4px; gap: 4px; }
     .stTabs [data-baseweb="tab"], .stTabs [data-baseweb="tab"] * { 
         background-color: transparent !important; 
@@ -163,24 +140,18 @@ st.markdown("""
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     
-    /* Caption */
     .stCaption, .stCaption * { color: #64748B !important; }
     
-    /* Dataframe */
     .stDataFrame, .stDataFrame *, [data-testid="stDataFrame"], [data-testid="stDataFrame"] * { 
         color: #1a1a2e !important; 
     }
     
-    /* Info/warning boxes */
     .stAlert, .stAlert *, [data-testid="stAlert"], [data-testid="stAlert"] * { 
         color: #1a1a2e !important; 
     }
 </style>
 """, unsafe_allow_html=True)
 
-# =============================================================================
-# HELPER FUNCTIONS
-# =============================================================================
 def create_metric_card(value, label):
     return f'<div class="metric-card"><div class="metric-value">{value}</div><div class="metric-label">{label}</div></div>'
 
@@ -191,7 +162,6 @@ def format_number(num, is_count=False):
     return f"{num:.2f}" if num < 1000 else (f"{num/1000:.2f}K" if num < 1_000_000 else f"{num/1_000_000:.2f}M")
 
 def style_chart(fig, height=400):
-    """Apply consistent light styling with dark text to plotly figures"""
     fig.update_layout(
         template="plotly_white",
         paper_bgcolor='rgba(0,0,0,0)',
@@ -201,7 +171,6 @@ def style_chart(fig, height=400):
         height=height,
         margin=dict(l=20, r=20, t=20, b=20)
     )
-    # Ensure axis labels are dark
     fig.update_xaxes(
         title_font=dict(color="#1a1a2e"),
         tickfont=dict(color="#64748B"),
@@ -212,16 +181,12 @@ def style_chart(fig, height=400):
         tickfont=dict(color="#64748B"),
         gridcolor="#E2E8F0"
     )
-    # Hide colorbar title (prevents "undefined"), keep tick labels dark
     fig.update_coloraxes(
         colorbar_title_text="",
         colorbar_tickfont_color="#1a1a2e"
     )
     return fig
 
-# =============================================================================
-# DATA LOADING
-# =============================================================================
 @st.cache_data
 def load_superstore():
     df = pd.read_csv('data/Sample_-_Superstore.csv', encoding='latin-1')
@@ -250,9 +215,6 @@ def load_ecommerce():
     df['Age_Group'] = pd.cut(df['Age'], bins=[18,25,35,45,55,100], labels=['18-25','26-35','36-45','46-55','55+'])
     return df
 
-# =============================================================================
-# SIDEBAR
-# =============================================================================
 with st.sidebar:
     st.markdown("## Data Science Dojo")
     st.markdown("Analytics Demo")
@@ -262,9 +224,6 @@ with st.sidebar:
     st.markdown("#### About")
     st.markdown("Interactive analytics demos showcasing data visualization capabilities.")
 
-# =============================================================================
-# UPLOAD YOUR DATA
-# =============================================================================
 def render_upload():
     st.markdown('<h1 class="dsd-header">Try With Your Data</h1>', unsafe_allow_html=True)
     st.markdown('<p class="dsd-subheader">Upload a CSV file to instantly explore your data with interactive visualizations</p>', unsafe_allow_html=True)
@@ -283,7 +242,6 @@ def render_upload():
             st.markdown('<div class="feature-card"><h4>Instant Insights</h4><p>Get summary statistics, distributions, and correlations in seconds.</p></div>', unsafe_allow_html=True)
         return
     
-    # Load file with encoding detection
     encodings = ['utf-8', 'latin-1', 'cp1252', 'iso-8859-1']
     df = None
     for enc in encodings:
@@ -297,7 +255,6 @@ def render_upload():
         st.error("Could not read file. Please ensure it's a valid CSV.")
         return
     
-    # Detect date columns
     date_cols = []
     for col in df.columns:
         if df[col].dtype == 'object':
@@ -314,7 +271,6 @@ def render_upload():
     numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     categorical_cols = [c for c in df.select_dtypes(include=['object']).columns if c not in date_cols]
     
-    # Data Overview
     st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
     st.markdown("### Data Overview")
     c1, c2, c3, c4 = st.columns(4)
@@ -325,7 +281,6 @@ def render_upload():
     
     fdf = df.copy()
     
-    # Date filter
     if date_cols:
         st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
         st.markdown("### Date Range")
@@ -337,7 +292,6 @@ def render_upload():
             with c2: end = st.date_input("End", value=valid.max(), min_value=valid.min(), max_value=valid.max())
             fdf = fdf[(fdf[dcol] >= pd.to_datetime(start)) & (fdf[dcol] <= pd.to_datetime(end))]
     
-    # Category filters
     if categorical_cols:
         st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
         st.markdown("### Filters")
@@ -351,7 +305,6 @@ def render_upload():
     
     st.caption(f"Showing {len(fdf):,} of {len(df):,} rows")
     
-    # Tabs
     st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
     st.markdown("### Explore Your Data")
     
@@ -363,7 +316,6 @@ def render_upload():
         t2, t3, t4 = st.tabs(["Distribution", "Relationships", "Summary"])
         t1 = None
     
-    # Time Series
     if t1 is not None:
         with t1:
             if numeric_cols:
@@ -381,7 +333,6 @@ def render_upload():
                         amap = {"Sum": "sum", "Mean": "mean", "Count": "count"}
                         grp = tdf.groupby('P')[ts_val].agg(amap[ts_agg]).reset_index().sort_values('P')
                         
-                        # Format period labels properly
                         def fmt_period(p, per):
                             if per == "Month": return p.strftime('%b %Y')
                             elif per == "Quarter": return f"Q{p.quarter} {p.year}"
@@ -399,7 +350,6 @@ def render_upload():
             else:
                 st.info("No numeric columns available for time series analysis.")
     
-    # Distribution
     with t2:
         if numeric_cols:
             c1, c2 = st.columns([1, 3])
@@ -413,7 +363,6 @@ def render_upload():
         else:
             st.info("No numeric columns available for distribution analysis.")
     
-    # Relationships
     with t3:
         if len(numeric_cols) >= 2:
             c1, c2 = st.columns([1, 3])
@@ -430,7 +379,6 @@ def render_upload():
         else:
             st.info("No numeric columns available.")
     
-    # Summary
     with t4:
         if numeric_cols:
             st.markdown("#### Numeric Summary")
@@ -446,7 +394,6 @@ def render_upload():
         if not numeric_cols and not categorical_cols:
             st.info("No columns available for summary.")
     
-    # Drill-down
     if categorical_cols and numeric_cols:
         st.markdown('<div class="section-divider"></div>', unsafe_allow_html=True)
         st.markdown("### Drill-Down Analysis")
@@ -463,9 +410,6 @@ def render_upload():
         fig.update_layout(xaxis_tickangle=-45)
         st.plotly_chart(fig, use_container_width=True)
 
-# =============================================================================
-# RETAIL SALES
-# =============================================================================
 def render_retail():
     df = load_superstore()
     st.markdown('<h1 class="dsd-header">Retail Sales Analytics</h1>', unsafe_allow_html=True)
@@ -554,9 +498,6 @@ def render_retail():
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig, use_container_width=True)
 
-# =============================================================================
-# HR ANALYTICS
-# =============================================================================
 def render_hr():
     df = load_hr()
     st.markdown('<h1 class="dsd-header">HR Analytics</h1>', unsafe_allow_html=True)
@@ -634,9 +575,6 @@ def render_hr():
     fig.update_layout(xaxis_tickangle=-45)
     st.plotly_chart(fig, use_container_width=True)
 
-# =============================================================================
-# MARKETING
-# =============================================================================
 def render_marketing():
     df = load_marketing()
     st.markdown('<h1 class="dsd-header">Marketing Analytics</h1>', unsafe_allow_html=True)
@@ -719,9 +657,6 @@ def render_marketing():
     style_chart(fig)
     st.plotly_chart(fig, use_container_width=True)
 
-# =============================================================================
-# E-COMMERCE
-# =============================================================================
 def render_ecommerce():
     df = load_ecommerce()
     st.markdown('<h1 class="dsd-header">E-commerce Analytics</h1>', unsafe_allow_html=True)
@@ -793,9 +728,6 @@ def render_ecommerce():
     style_chart(fig)
     st.plotly_chart(fig, use_container_width=True)
 
-# =============================================================================
-# MAIN
-# =============================================================================
 if dashboard == "Upload Your Data": render_upload()
 elif dashboard == "Retail Sales": render_retail()
 elif dashboard == "HR Analytics": render_hr()
